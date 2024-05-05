@@ -12,7 +12,7 @@ def preprocess_input(data):
 # Function to predict failure
 def predict_failure(input_data):
     # Load your trained model here using pickle
-    with open(r"C:\Users\Admin\failure.pkl", 'rb') as model_file:
+    with open(r"failure.pkl", 'rb') as model_file:
         model = pickle.load(model_file)
 
     # Dummy prediction for demonstration
