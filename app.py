@@ -12,8 +12,10 @@ def preprocess_input(data):
 # Function to predict failure
 def predict_failure(input_data):
     # Load your trained model here using pickle
-    with open(r"failure.pkl", 'rb') as model_file:
+    with open("failure.pkl", 'rb') as model_file:
+        print("Loading the model...")
         model = pickle.load(model_file)
+        print("Model loaded successfully.")
 
     # Dummy prediction for demonstration
     prediction = model.predict_proba(input_data)[:, 1]  # Assuming model returns probabilities
@@ -26,14 +28,14 @@ def predict_failure(input_data):
         return 'Not Failed'
 
 # Streamlit UI
-st.title('Machine_Failure Prediction App')
+st.title('Machine Failure Prediction App')
 
+# Sidebar for input parameters
 st.sidebar.header('Input Parameters')
 
 # Input fields
 type_options = [0, 1, 2]  # Define options for 'Type' (assuming it's already encoded numerically)
 selected_type = st.sidebar.selectbox('Type', type_options)
-
 air_temperature = st.sidebar.number_input('Air temperature [K]')
 process_temperature = st.sidebar.number_input('Process temperature [K]')
 rotational_speed = st.sidebar.number_input('Rotational speed [rpm]')
@@ -48,17 +50,6 @@ input_df = pd.DataFrame({
     'Torque [Nm]': [torque],
     'Tool wear [min]': [tool_wear],
 })
-import streamlit as st
-
-# Add a markdown element with unsafe_allow_html to inject CSS
-st.markdown("""<style>
-    body {
-        background: linear-gradient(to right, lightblue, lightgreen);
-    }
-</style>""", unsafe_allow_html=True)
-
-# ... rest of your Streamlit app code
-
 
 # Preprocess input data
 input_data = preprocess_input(input_df)
@@ -66,12 +57,5 @@ input_data = preprocess_input(input_df)
 # Button to trigger prediction
 if st.sidebar.button('Predict'):
     prediction = predict_failure(input_data)
-    if prediction == 'Failed':
-        st.write('Failure Prediction:', prediction)
-        st.image(r"C:\Users\Admin\Downloads\machine failed.jpg", width=250)  # Replace with path to your 'failed' image
-    elif prediction == 'Ready to Fail':
-        st.write('Failure Prediction:', prediction)
-        st.image(r"C:\Users\Admin\Downloads\ready to fail.jpg", width=250)  # Replace with path to your 'ready_to_fail' image
-    else:
-        st.write('Failure Prediction:', prediction)
-        st.image(r"C:\Users\Admin\Downloads\machine not failed.jpg", width=250)  # Replace with path to your 'not_failed' image
+    st.write('Failure Prediction:', prediction)
+
